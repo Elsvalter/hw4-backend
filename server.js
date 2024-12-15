@@ -9,7 +9,7 @@ const port = process.env.PORT || 3000;
 
 const app = express();
 
-app.use(cors({ origin: 'http://localhost:8080', credentials: true }));
+app.use(cors({ origin: 'http://localhost:8081', credentials: true }));
 // We need to include "credentials: true" to allow cookies to be represented  
 // Also "credentials: 'include'" need to be added in Fetch API in the Vue.js App
 
@@ -28,7 +28,7 @@ app.listen(port, () => {
     console.log("Server is listening to port " + port)
 });
 
-/*
+
 // is used to check whether a user is authinticated
 app.get('/auth/authenticate', async(req, res) => {
     console.log('authentication request has been arrived');
@@ -103,7 +103,7 @@ app.post('/auth/login', async(req, res) => {
         bcrypt.compare method takes the first argument as a plain text and the second argument as a hash password. 
         If both are equal then it returns true else returns false.
         */
-/*
+
         //Checking if the password is correct
         const validPassword = await bcrypt.compare(password, user.rows[0].password);
         //console.log("validPassword:" + validPassword);
@@ -125,7 +125,6 @@ app.get('/auth/logout', (req, res) => {
     console.log('delete jwt request arrived');
     res.status(202).clearCookie('jwt').json({ "Msg": "cookie cleared" }).send
 });
-*/
 
 // add post
 app.post('/api/posts', async(req, res) => {
