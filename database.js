@@ -3,7 +3,7 @@ const Pool = require('pg').Pool;
 const pool = new Pool({
     user: "postgres",
     password: "postgres", //add your password
-    database: "testWad",
+    database: "WAD",
     host: "localhost",
     port: "5432"
 });
@@ -29,11 +29,20 @@ const createTblQuery = `
         id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
         email VARCHAR(200) NOT NULL UNIQUE,
         password VARCHAR(200) NOT NULL 
+    );
+
+    CREATE TABLE IF NOT EXISTS "posts" (
+        id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+        content VARCHAR(200) NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );`;
 
 execute(createTblQuery).then(result => {
     if (result) {
-        console.log('Table "users" is created');
+        console.log('Table "users" and "posts" is created');
+    }
+    else{
+        console.error('Failed to create tables.')
     }
 });
 
