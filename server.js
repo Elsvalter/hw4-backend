@@ -28,7 +28,7 @@ app.listen(port, () => {
     console.log("Server is listening to port " + port)
 });
 
-
+/*
 // is used to check whether a user is authinticated
 app.get('/auth/authenticate', async(req, res) => {
     console.log('authentication request has been arrived');
@@ -103,7 +103,7 @@ app.post('/auth/login', async(req, res) => {
         bcrypt.compare method takes the first argument as a plain text and the second argument as a hash password. 
         If both are equal then it returns true else returns false.
         */
-
+/*
         //Checking if the password is correct
         const validPassword = await bcrypt.compare(password, user.rows[0].password);
         //console.log("validPassword:" + validPassword);
@@ -125,6 +125,7 @@ app.get('/auth/logout', (req, res) => {
     console.log('delete jwt request arrived');
     res.status(202).clearCookie('jwt').json({ "Msg": "cookie cleared" }).send
 });
+*/
 
 // add post
 app.post('/api/posts', async(req, res) => {
@@ -144,7 +145,7 @@ app.post('/api/posts', async(req, res) => {
     }
 }); 
 
-/*
+
 
 // get all posts
 app.get('/api/posts', async(req, res) => {
@@ -160,7 +161,7 @@ app.get('/api/posts', async(req, res) => {
 });
 
 
-// Task 3
+// get specific post
 app.get('/api/posts/:id', async(req, res) => {
     try {
         console.log("get a post with route parameter  request has arrived");
@@ -169,7 +170,7 @@ app.get('/api/posts/:id', async(req, res) => {
         const { id } = req.params; // assigning all route "parameters" to the id "object"
         const posts = await pool.query( // pool.query runs a single query on the database.
             //$1 is mapped to the first element of { id } (which is just the value of id). 
-            "SELECT * FROM posttable WHERE id = $1", [id]
+            "SELECT * FROM posts WHERE id = $1", [id]
         );
         res.json(posts.rows[0]); // we already know that the row array contains a single element, and here we are trying to access it
         // The res.json() function sends a JSON response. 
@@ -181,14 +182,15 @@ app.get('/api/posts/:id', async(req, res) => {
 
 
 
-// Task 4
+// update a post
 app.put('/api/posts/:id', async(req, res) => {
     try {
+        const currentTime = new Date();
         const { id } = req.params;
         const post = req.body;
         console.log("update request has arrived");
         const updatepost = await pool.query(
-            "UPDATE posttable SET (title, body, urllink) = ($2, $3, $4) WHERE id = $1", [id, post.title, post.body, post.urllink]
+            "UPDATE posts SET (content, created_at) = ($2, $3) WHERE id = $1", [id, post.content, currentTime]
         );
         res.json(updatepost);
     } catch (err) {
@@ -197,23 +199,18 @@ app.put('/api/posts/:id', async(req, res) => {
 });
 
 
-// Task 5
+// delete specific post
 app.delete('/api/posts/:id', async(req, res) => {
     try {
         const { id } = req.params;
         //const post = req.body; // we do not need a body for a delete request
         console.log("delete a post request has arrived");
         const deletepost = await pool.query(
-            "DELETE FROM posttable WHERE id = $1", [id]
+            "DELETE FROM posts WHERE id = $1", [id]
         );
         res.json(deletepost);
     } catch (err) {
         console.error(err.message);
     }
 }); 
-*/
 
-
-app.listen(port, () => {
-    console.log("Server is listening to port " + port)
-});
