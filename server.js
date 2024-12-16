@@ -105,6 +105,16 @@ app.delete('/api/posts/:id', async(req, res) => {
         console.error(err.message);
     }
 }); 
+app.delete('/api/posts', (req, res) => {
+    // Logic to delete all posts
+    pool.query('DELETE FROM posts', (err, result) => {
+      if (err) {
+        res.status(500).send({ error: 'Failed to delete posts' });
+      } else {
+        res.status(200).send({ message: 'All posts deleted successfully' });
+      }
+    });
+  });
 
 
 // is used to check whether a user is authinticated
