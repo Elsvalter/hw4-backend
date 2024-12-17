@@ -9,7 +9,7 @@ const port = process.env.PORT || 3000;
 
 const app = express();
 
-app.use(cors({ origin: 'http://localhost:8081', credentials: true }));
+app.use(cors({ origin: 'http://localhost:8080', credentials: true }));
 // We need to include "credentials: true" to allow cookies to be represented  
 // Also "credentials: 'include'" need to be added in Fetch API in the Vue.js App
 
@@ -105,6 +105,16 @@ app.delete('/api/posts/:id', async(req, res) => {
         console.error(err.message);
     }
 }); 
+app.delete('/api/posts', (req, res) => {
+    // Logic to delete all posts
+    pool.query('DELETE FROM posts', (err, result) => {
+      if (err) {
+        res.status(500).send({ error: 'Failed to delete posts' });
+      } else {
+        res.status(200).send({ message: 'All posts deleted successfully' });
+      }
+    });
+  });
 
 app.delete('/api/posts',  async(req, res) => {
     try {
