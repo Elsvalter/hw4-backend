@@ -106,10 +106,24 @@ app.delete('/api/posts/:id', async(req, res) => {
     }
 }); 
 
+app.delete('/api/posts',  async(req, res) => {
+    try {
+        console.log("delete all posts request has arrived");
+        const deleteAll = await pool.query(
+            "DELETE FROM posts"
+        );
+        res.json({
+            message: "All posts have been deleted",
+            rowCount: deleteAll.rowCount // Number of rows affected
+        });
+    }catch (err) {
+        console.error(err.message);
+    }
+});
 
 // is used to check whether a user is authinticated
 app.get('/auth/authenticate', async(req, res) => {
-    console.log('authentication request has been arrived');
+    console.log('aut, hentication request has been arrived');
     const token = req.cookies.jwt; // assign the token named jwt to the token const
     console.log("token " + token);
     let authenticated = false; // a user is not authenticated until proven the opposite
